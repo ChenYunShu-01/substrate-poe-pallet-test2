@@ -133,7 +133,7 @@ pub mod pallet {
 }
 ```
 ---
-pallets/poe/src/test.rs:
+pallets/poe/src/tests.rs:
 ```javascript
 use crate::{mock::*, Error, Proofs};
 use frame_support::{assert_noop, assert_ok};
