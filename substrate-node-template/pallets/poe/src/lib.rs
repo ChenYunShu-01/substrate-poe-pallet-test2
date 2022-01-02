@@ -23,6 +23,7 @@ pub mod pallet {
         type Event: From<Event<Self>> + IsType<<Self as frame_system::Config>::Event>;
         #[pallet::constant]
         type MaximumClaimLength: Get<u32>;
+        type MinimumClaimLength: Get<u32>;
     }
 
     #[pallet::pallet]
@@ -54,6 +55,7 @@ pub mod pallet {
         NotClaimOwner,
         DestinationIsClaimOwner,
         ClaimTooBig,
+        ClaimTooSmall,
     }
 
     #[pallet::hooks]
@@ -68,10 +70,8 @@ pub mod pallet {
             origin: OriginFor<T>,
             claim: Vec<u8>
         ) -> DispatchResultWithPostInfo {
-            ensure!(
-				claim.len() <= T::MaximumClaimLength::get() as usize,
-				Error::<T>::ClaimTooBig
-			);
+            ensure!(claim.len() <= T::MaximumClaimLength::get() as usize, Error::<T>::ClaimTooBig);
+            ensure!(claim.len() <= T::MinimumClaimLength::get() as usize, Error::<T>::ClaimTooSmall);
             let sender = ensure_signed(origin)?;
             ensure!(!Proofs::<T>::contains_key(&claim), Error::<T>::ProofAlreadyExist);
             Proofs::<T>::insert(
@@ -88,10 +88,8 @@ pub mod pallet {
             origin: OriginFor<T>,
             claim: Vec<u8>
         ) -> DispatchResultWithPostInfo {
-            ensure!(
-				claim.len() <= T::MaximumClaimLength::get() as usize,
-				Error::<T>::ClaimTooBig
-			);
+            ensure!(claim.len() <= T::MaximumClaimLength::get() as usize, Error::<T>::ClaimTooBig);
+            ensure!(claim.len() <= T::MinimumClaimLength::get() as usize, Error::<T>::ClaimTooSmall);
             let sender = ensure_signed(origin)?;
             let (owner, _) = Proofs::<T>::get(&claim).ok_or(Error::<T>::ClaimNotExist)?;
             ensure!(owner == sender, Error::<T>::NotClaimOwner);
@@ -106,10 +104,8 @@ pub mod pallet {
             destination: T::AccountId,
             claim: Vec<u8>
         ) -> DispatchResultWithPostInfo {
-            ensure!(
-				claim.len() <= T::MaximumClaimLength::get() as usize,
-				Error::<T>::ClaimTooBig
-			);
+            ensure!(claim.len() <= T::MaximumClaimLength::get() as usize, Error::<T>::ClaimTooBig);
+            ensure!(claim.len() <= T::MinimumClaimLength::get() as usize, Error::<T>::ClaimTooSmall);
             let sender = ensure_signed(origin)?;
             let (owner, _) = Proofs::<T>::get(&claim).ok_or(Error::<T>::ClaimNotExist)?;
             ensure!(owner == sender, Error::<T>::NotClaimOwner);
