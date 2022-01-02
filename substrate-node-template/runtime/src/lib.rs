@@ -282,11 +282,13 @@ impl pallet_template::Config for Runtime {
 
 parameter_types! {
 	pub const MaximumClaimLength: u32 = 512;
+	pub const MaximumClaimLength: u32 = 64;
 }
 
 impl pallet_poe::Config for Runtime {
 	type Event = Event;
 	type MaximumClaimLength = MaximumClaimLength;
+	type MinimumClainLength = MinimumClaimLength;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
