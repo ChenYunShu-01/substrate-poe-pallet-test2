@@ -13,6 +13,17 @@ fn create_claim_failed_when_too_big() {
     });
 }
 
+fn create_claim_failed_when_too_small() {
+    new_test_ext().execute_with(||{
+        //minimum claim length is set to 4 for test
+        let claim = vec![0, 1, 1, 1];
+        assert_noop!(
+            PoeModule::create_claim(Origin::signed(1), claim.clone()),
+            Error::<Test>::ClaimTooSmall
+        );
+    });
+}
+
 fn create_claim_works() {
     new_test_ext().execute_with(||{
         let claim = vec![0, 1];
