@@ -26,6 +26,7 @@ parameter_types! {
 	pub const BlockHashCount: u64 = 250;
 	pub const SS58Prefix: u8 = 42;
 	pub const MaximumClaimLength: u32 = 8;
+	pub const MinimumClaimLength: u32 = 4;
 }
 
 impl system::Config for Test {
