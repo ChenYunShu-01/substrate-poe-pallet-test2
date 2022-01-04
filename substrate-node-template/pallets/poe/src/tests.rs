@@ -4,8 +4,7 @@ use frame_support::{assert_noop, assert_ok};
 #[test]
 fn create_claim_failed_when_too_big() {
     new_test_ext().execute_with(||{
-        //maximum claim length is set to 8 for test
-        let claim = vec![1; 1024];
+        let claim = vec![1; (MaximumClaimLength::get() + 1).try_into().unwrap()];
         assert_noop!(
             PoeModule::create_claim(Origin::signed(1), claim.clone()),
             Error::<Test>::ClaimTooBig
@@ -16,8 +15,7 @@ fn create_claim_failed_when_too_big() {
 #[test]
 fn create_claim_failed_when_too_small() {
     new_test_ext().execute_with(||{
-        //minimum claim length is set to 4 for test
-        let claim = vec![1; 8];
+        let claim = vec![1; (MinimumClaimLength::get() - 1).try_into().unwrap()];
         assert_noop!(
             PoeModule::create_claim(Origin::signed(1), claim.clone()),
             Error::<Test>::ClaimTooSmall
