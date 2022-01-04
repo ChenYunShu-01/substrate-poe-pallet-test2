@@ -128,7 +128,6 @@ pub mod pallet {
 ---
 ```javascript
 pallets/poe/src/tests.rs:
-```rust
 use crate::{mock::*, Error, Proofs};
 use frame_support::{assert_noop, assert_ok};
 
