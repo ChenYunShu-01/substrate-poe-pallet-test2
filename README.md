@@ -2,6 +2,7 @@
 为poe-pallet 的 create_claim(), revoke_claim(), transfer_claim() 增加测试，以及设置claim的长度限制并测试。
 
 ---
+```javascript
 pub use pallet::*;
 
 #[cfg(test)]
@@ -125,6 +126,7 @@ pub mod pallet {
 
 ```
 ---
+```javascript
 pallets/poe/src/tests.rs:
 ```rust
 use crate::{mock::*, Error, Proofs};
